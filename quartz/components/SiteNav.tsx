@@ -12,6 +12,10 @@ interface NavLink {
   match?: string[]
   // draw a vertical divider before this link (e.g. to set tag pages apart)
   dividerBefore?: boolean
+  // id rendered as data-t (e.g. so a home topic can underline its nav item)
+  key?: string
+  // underline / text color on hover, focus and when active
+  color?: { light: string; dark: string }
 }
 
 type SiteNavConfig = {
@@ -45,6 +49,7 @@ export default ((config: SiteNavConfig) => {
             <li class={link.dividerBefore ? "divider-before" : ""}>
               <a
                 class={isActive(link) ? "active" : ""}
+                data-t={link.key}
                 href={
                   link.slug === "/"
                     ? pathToRoot(current)
@@ -67,7 +72,23 @@ export default ((config: SiteNavConfig) => {
 
   SiteNav.afterDOMLoaded = concatenateResources(...components.map((c) => c.afterDOMLoaded))
   SiteNav.beforeDOMLoaded = concatenateResources(...components.map((c) => c.beforeDOMLoaded))
-  SiteNav.css = concatenateResources(style, ...components.map((c) => c.css))
+  // per-link colors as --nav-c, switched with the theme. The active link's color also
+  // becomes the page's key color: --secondary (links, accents), --key-fill (title band,
+  // same in both themes) and --key-soft (accents on the band)
+  const colorRules = config.links
+    .filter((link) => link.key && link.color)
+    .map((link) => {
+      const { light, dark } = link.color!
+      const a = `.site-nav-links a[data-t="${link.key}"]`
+      const page = `body:has(.site-nav-links a.active[data-t="${link.key}"])`
+      return `${a} { --nav-c: ${light}; }
+:root[saved-theme="dark"] ${a} { --nav-c: ${dark}; }
+${page} { --secondary: ${light}; --key-fill: ${light}; --key-soft: ${dark}; }
+:root[saved-theme="dark"] ${page} { --secondary: ${dark}; }`
+    })
+    .join("\n")
+
+  SiteNav.css = concatenateResources(style, colorRules, ...components.map((c) => c.css))
 
   return SiteNav
 }) satisfies QuartzComponentConstructor<SiteNavConfig>

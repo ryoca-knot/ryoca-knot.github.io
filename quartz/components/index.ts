@@ -26,8 +26,8 @@ import ConditionalRender from "./ConditionalRender"
 import SiteNav from "./SiteNav"
 import LinkCards from "./LinkCards"
 import EventTimeline from "./EventTimeline"
-import ProfileCard from "./ProfileCard"
-import HomeDashboard from "./HomeDashboard"
+import HomeHero from "./HomeHero"
+import PageBand from "./PageBand"
 
 export {
   ArticleTitle,
@@ -58,6 +58,6 @@ export {
   SiteNav,
   LinkCards,
   EventTimeline,
-  ProfileCard,
-  HomeDashboard,
+  HomeHero,
+  PageBand,
 }

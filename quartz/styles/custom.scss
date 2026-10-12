@@ -3,6 +3,34 @@
 
 // put your custom CSS here!
 
+// Key color: --secondary is the active nav item's color on each page (SiteNav.tsx).
+// Hover and tint colors are derived from it so they follow the page.
+body {
+  --tertiary: color-mix(in srgb, var(--secondary) 70%, var(--dark));
+  --highlight: color-mix(in srgb, var(--secondary) 12%, transparent);
+}
+
+// Article headings: Mincho (headerFont), with a small dot in the key color like the home topics
+article > h2 {
+  font-weight: 400;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 0.32em;
+    height: 0.32em;
+    margin-right: 0.5em;
+    border-radius: 50%;
+    background: var(--secondary);
+    vertical-align: 0.2em;
+  }
+}
+
+article > h1,
+article > h3 {
+  font-weight: 400;
+}
+
 // Auto Card Link (```cardlink blocks from Obsidian)
 .auto-card-link-container {
   margin: 1rem 0;
@@ -101,14 +129,14 @@
   }
 }
 
-// Left sidebar: "Recent Updates" and "Explorer" as separate cards
+// Left sidebar: "Recent Updates" and "Explorer" as sections divided by a thin rule
+// (no cards, like the home page)
 @media all and not ($mobile) {
   .left .recent-notes,
   .left .explorer {
     box-sizing: border-box;
-    border: 1px solid var(--lightgray);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--lightgray);
+    padding: 0.75rem 0 0;
   }
 }
 
@@ -212,6 +240,11 @@
     & .sidebar.left {
       padding-top: 1rem;
     }
+  }
+
+  // tablet: line the content up with the nav frame (the left sidebar brings its own 2rem)
+  @media all and ($tablet) {
+    padding: 0 var(--site-gutter) 0 0;
   }
 }
 

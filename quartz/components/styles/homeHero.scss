@@ -1,0 +1,370 @@
+// Home (slug "index") only: intro + topics on a fixed blue-green background, inside the
+// same frame as the nav (--site-max / --site-gutter) so their edges line up. On desktop
+// everything fits on one screen.
+
+body[data-slug="index"] {
+  --home-bg: #405b60;
+  --on: #f4f5f4;
+  --on-sub: rgba(244, 245, 244, 0.74);
+  --on-line: rgba(244, 245, 244, 0.18);
+
+  background-color: var(--home-bg);
+
+  & header.site-header {
+    border-bottom: 0;
+  }
+
+  // only the hero is shown: no sidebars, page body, change log or page meta
+  & .page {
+    max-width: none;
+  }
+
+  & .page > #quartz-body {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100dvh - var(--site-nav-h));
+    padding: 0;
+
+    & > .sidebar,
+    & > .center > article,
+    & > .center > hr,
+    & > .center > .page-footer,
+    & > .center > .page-header > .popover-hint > :not(.home-hero) {
+      display: none;
+    }
+
+    & > .center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      margin: 0;
+    }
+
+    & > .center > .page-header {
+      flex: 1;
+      display: flex;
+      margin: 0;
+      padding: 0;
+
+      & > .popover-hint {
+        flex: 1;
+        display: flex;
+      }
+    }
+
+    // footer layout comes from footer.scss; here only the frame and colors on the dark field
+    & > footer {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: var(--site-max);
+      min-width: 0;
+      margin: 0 auto;
+      padding: 16px var(--site-gutter) 28px;
+      border-top: 0;
+
+      & p {
+        color: var(--on-sub);
+      }
+
+      & a {
+        color: var(--on);
+      }
+    }
+  }
+}
+
+:root[saved-theme="dark"] body[data-slug="index"] {
+  --home-bg: #2b4044;
+}
+
+.home-hero {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: clamp(32px, 5vw, 56px) var(--site-gutter) 0;
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--on);
+  -webkit-font-smoothing: antialiased;
+
+  & p {
+    color: var(--on);
+  }
+}
+
+.home-intro {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(20px, 4vw, 44px);
+  align-items: end;
+  padding-bottom: clamp(32px, 5vw, 56px);
+
+  & .home-avatar {
+    display: block;
+    width: clamp(112px, 16vw, 176px);
+    max-width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    margin: 0;
+    border-radius: 2px;
+    outline: 1px solid var(--on-line);
+    outline-offset: 6px;
+  }
+
+  & .home-name {
+    margin: 0 0 18px;
+    font-family: var(--headerFont);
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 76px);
+    line-height: 1;
+    color: var(--on);
+
+    & small {
+      margin-left: 14px;
+      font-family: var(--bodyFont);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      color: var(--on-sub);
+    }
+  }
+
+  & .home-bio {
+    margin: 0;
+    max-width: 34em;
+    font-family: var(--headerFont);
+    font-size: clamp(16px, 1.6vw, 18px);
+    line-height: 2;
+    white-space: pre-line;
+  }
+
+  & .home-roles {
+    margin: 12px 0 0;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--on-sub);
+  }
+}
+
+.home-topic {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: 8px clamp(24px, 4vw, 56px);
+  align-items: baseline;
+  padding-block: clamp(24px, 3.5vw, 36px);
+  border-top: 1px solid var(--on-line);
+  transition: background-color 0.25s ease;
+
+  &:first-child {
+    border-top: 0;
+  }
+
+  & h2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+    margin: 0;
+    font-family: var(--headerFont);
+    font-weight: 400;
+    font-size: clamp(26px, 3vw, 34px);
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    color: var(--topic-color);
+    transition: color 0.25s ease;
+
+    &::before {
+      content: "";
+      align-self: center;
+      width: 9px;
+      height: 9px;
+      margin-right: 2px;
+      border-radius: 50%;
+      background: var(--topic-color);
+    }
+
+    & span {
+      font-family: var(--bodyFont);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--on-sub);
+    }
+  }
+
+  & p {
+    max-width: 40em;
+    margin: 0 0 8px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  // outlined button with an arrow that nudges on hover
+  & .home-topic-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: 4px;
+    padding: 6px 14px 6px 16px;
+    border: 1.5px solid currentColor;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--topic-color);
+    text-decoration: none;
+    transition:
+      background-color 0.25s,
+      color 0.25s,
+      border-color 0.25s;
+
+    &::after {
+      content: "→";
+      transition: transform 0.2s;
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+      transform: translateX(4px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 3px;
+    }
+  }
+
+  // hover / keyboard focus: the block fills with the topic color
+  &:hover,
+  &:focus-within {
+    background-color: var(--topic-fill);
+
+    & h2 {
+      color: #fff;
+
+      & span {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    & .home-topic-go {
+      background: #fff;
+      border-color: #fff;
+      color: var(--topic-fill);
+    }
+  }
+}
+
+// desktop: one screen, intro on the left and the topics stacked on the right (5:7)
+@media (min-width: 900px) and (min-height: 560px) {
+  body[data-slug="index"] .page > #quartz-body > footer {
+    padding-block: 12px 14px;
+  }
+
+  .home-hero {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+    padding-block: clamp(16px, 3vh, 40px);
+  }
+
+  .home-intro {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 16px;
+    padding-bottom: 0;
+
+    & .home-avatar {
+      width: clamp(96px, 14vh, 150px);
+    }
+
+    & .home-name {
+      font-size: clamp(44px, 8vh, 72px);
+      margin-bottom: 12px;
+    }
+
+    & .home-bio {
+      font-size: 16px;
+      line-height: 1.85;
+    }
+  }
+
+  .home-topic {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+    padding: clamp(8px, 1.6vh, 22px) 22px;
+    // the fill reaches out on the left only, so its right edge stays on the nav edge
+    margin-left: -22px;
+    border-radius: 3px;
+
+    & p {
+      margin-bottom: 4px;
+      line-height: 1.75;
+    }
+
+    &:hover,
+    &:focus-within,
+    &:hover + .home-topic,
+    &:focus-within + .home-topic {
+      border-top-color: transparent;
+    }
+  }
+}
+
+// short desktop screens (e.g. 900×560, 1024×600): tighten spacing so it still fits
+@media (min-width: 900px) and (min-height: 560px) and (max-height: 680px) {
+  body[data-slug="index"] .page > #quartz-body > footer {
+    padding-block: 6px 8px;
+  }
+
+  .home-hero {
+    padding-block: 8px;
+  }
+
+  .home-intro .home-bio {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .home-topic {
+    padding-block: 6px;
+    gap: 4px;
+
+    & h2 {
+      font-size: 26px;
+    }
+
+    & p {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    & .home-topic-go {
+      margin-top: 2px;
+      padding-block: 4px;
+      font-size: 13px;
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .home-intro,
+  .home-topic {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-topic,
+  .home-topic h2,
+  .home-topic .home-topic-go {
+    transition: none;
+  }
+
+  .home-topic .home-topic-go::after {
+    transition: none;
+    transform: none !important;
+  }
+}

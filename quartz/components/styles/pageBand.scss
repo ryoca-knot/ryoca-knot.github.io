@@ -1,0 +1,89 @@
+// Title band on every page but home. --key-fill / --key-soft come from the active nav
+// item (SiteNav.tsx); the defaults are the home background color.
+body {
+  --key-fill: #405b60;
+  --key-soft: #9cc4c8;
+}
+
+.page-band {
+  --on: #f4f5f4;
+  --on-sub: rgba(244, 245, 244, 0.74);
+
+  box-sizing: border-box;
+  padding: 1.25rem 1.75rem 1.5rem;
+  border-radius: 3px;
+  background-color: var(--key-fill);
+  color: var(--on);
+
+  & .breadcrumb-container {
+    margin: 0 0 0.75rem;
+    font-size: 0.85rem;
+
+    & a,
+    & p {
+      color: var(--on-sub);
+      font-weight: 400;
+    }
+
+    & a:hover {
+      color: var(--on);
+    }
+  }
+
+  // Mincho title with a dot in the soft key color, like a home topic heading
+  & h1.article-title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin: 0;
+    font-weight: 400;
+    font-size: clamp(1.9rem, 3.2vw, 2.4rem);
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    color: var(--on);
+
+    &::before {
+      content: "";
+      flex-shrink: 0;
+      align-self: center;
+      width: 0.3em;
+      height: 0.3em;
+      border-radius: 50%;
+      background: var(--key-soft);
+    }
+  }
+
+  & .content-meta {
+    margin: 0.6rem 0 0;
+    font-size: 0.85rem;
+    color: var(--on-sub);
+  }
+
+  & .tags {
+    margin: 0.75rem 0 0;
+  }
+
+  & a.internal.tag-link {
+    border: 1px solid rgba(244, 245, 244, 0.45);
+    border-radius: 4px;
+    background: none;
+    color: var(--on);
+    font-weight: 400;
+    font-size: 0.85rem;
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+
+    &:hover,
+    &:focus-visible {
+      background: var(--on);
+      color: var(--key-fill);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & a.internal.tag-link {
+      transition: none;
+    }
+  }
+}
