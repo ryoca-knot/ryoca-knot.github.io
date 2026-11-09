@@ -85,13 +85,8 @@ export const sharedPageComponents: SharedLayout = {
     ChangeLog(),
     //LikeButton(),
   ],
-  footer: Component.Footer({
-    links: {
-      X: "https://x.com/ryoca_knot",
-      Twitch: "https://www.twitch.tv/ryoca_knot",
-      Mixcloud: "https://www.mixcloud.com/hanazono/",
-    },
-  }),
+  // no account links here: they are on the Links page
+  footer: Component.Footer({ links: {} }),
 }
 
 // home: intro + one row per topic; `key` matches the SiteNav link it underlines on hover
