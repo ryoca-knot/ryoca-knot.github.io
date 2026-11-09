@@ -1,5 +1,5 @@
 import { concatenateResources } from "../util/resources"
-import { pathToRoot, resolveRelative, SimpleSlug } from "../util/path"
+import { joinSegments, pathToRoot, resolveRelative, SimpleSlug } from "../util/path"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { i18n } from "../i18n"
 import style from "./styles/siteNav.scss"
@@ -12,6 +12,10 @@ interface NavLink {
   match?: string[]
   // draw a vertical divider before this link (e.g. to set tag pages apart)
   dividerBefore?: boolean
+  // id rendered as data-t (e.g. so a home topic can underline its nav item)
+  key?: string
+  // underline / text color on hover, focus and when active
+  color?: { light: string; dark: string }
 }
 
 type SiteNavConfig = {
@@ -37,14 +41,25 @@ export default ((config: SiteNavConfig) => {
 
     return (
       <nav class="site-nav">
-        <a class="site-nav-title" href={pathToRoot(current)}>
-          {title}
+        {/* logo mark: black on the light nav, white on the dark one (siteNav.scss) */}
+        <a class="site-nav-title" href={pathToRoot(current)} aria-label={title}>
+          <img
+            class="site-logo light"
+            src={joinSegments(pathToRoot(current), "static/logo/mark_black.png")}
+            alt=""
+          />
+          <img
+            class="site-logo dark"
+            src={joinSegments(pathToRoot(current), "static/logo/mark_white.png")}
+            alt=""
+          />
         </a>
         <ul class="site-nav-links">
           {config.links.map((link) => (
             <li class={link.dividerBefore ? "divider-before" : ""}>
               <a
                 class={isActive(link) ? "active" : ""}
+                data-t={link.key}
                 href={
                   link.slug === "/"
                     ? pathToRoot(current)
@@ -67,7 +82,23 @@ export default ((config: SiteNavConfig) => {
 
   SiteNav.afterDOMLoaded = concatenateResources(...components.map((c) => c.afterDOMLoaded))
   SiteNav.beforeDOMLoaded = concatenateResources(...components.map((c) => c.beforeDOMLoaded))
-  SiteNav.css = concatenateResources(style, ...components.map((c) => c.css))
+  // per-link colors as --nav-c, switched with the theme. The active link's color also
+  // becomes the page's key color: --secondary (links, accents), --key-fill (title band,
+  // same in both themes) and --key-soft (accents on the band)
+  const colorRules = config.links
+    .filter((link) => link.key && link.color)
+    .map((link) => {
+      const { light, dark } = link.color!
+      const a = `.site-nav-links a[data-t="${link.key}"]`
+      const page = `body:has(.site-nav-links a.active[data-t="${link.key}"])`
+      return `${a} { --nav-c: ${light}; }
+:root[saved-theme="dark"] ${a} { --nav-c: ${dark}; }
+${page} { --secondary: ${light}; --key-fill: ${light}; --key-soft: ${dark}; }
+:root[saved-theme="dark"] ${page} { --secondary: ${dark}; }`
+    })
+    .join("\n")
+
+  SiteNav.css = concatenateResources(style, colorRules, ...components.map((c) => c.css))
 
   return SiteNav
 }) satisfies QuartzComponentConstructor<SiteNavConfig>

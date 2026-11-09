@@ -121,33 +121,38 @@ const config: QuartzConfig = {
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
+      // 見出しは明朝、本文はゴシック（ホームのデザインに合わせる）。
+      // Zen Kaku Gothic New は 600 とイタリックが無いので、読み込む太さを明示する
       typography: {
-        header: "Schibsted Grotesk",
-        body: "Source Sans Pro",
+        header: { name: "Zen Old Mincho", weights: [400, 600] },
+        body: { name: "Zen Kaku Gothic New", weights: [400, 500, 700], includeItalic: false },
         code: "IBM Plex Mono",
       },
+      // secondary はキーカラーの既定値（ホーム背景の青緑）。各ページでは、ナビで選択中の
+      // 項目の色に置き換わる（SiteNav.tsx）。tertiary / highlight は custom.scss で
+      // そのキーカラーから作る
       colors: {
         lightMode: {
-          light: "#eaefef",         // 1段目：ページ全体の背景色（明るいアイスグレー）
-          lightgray: "#bfc9d1",     // 2段目：枠線・検索窓・コードブロック背景（ライトスレート）
-          gray: "#6c7d8a",          // メタ情報・作成日時などのサブテキスト
-          darkgray: "#25343f",      // 3段目：本文のテキスト色（ダークスレート）
-          dark: "#17232b",          // 見出し（h1, h2等）や太字の強調色
-          secondary: "#d18143",     // 4段目：リンク色・ページタイトル・アクセント（オレンジ）
-          tertiary: "#e07e36",      // リンクやタグのホバー（押し込み）時
-          highlight: "rgba(255, 155, 81, 0.15)", // 内部リンク等の薄い強調背景
-          textHighlight: "#ff9b5144",            // テキストハイライト（マーカー）色
+          light: "#f2f3f2", // ページ背景・ナビ背景（グレー）
+          lightgray: "#dcdedc", // 区切り線・枠線・検索窓
+          gray: "#6b706e", // メタ情報・サブテキスト
+          darkgray: "#2e3335", // 本文テキスト
+          dark: "#1c2124", // 見出し・強調
+          secondary: "#405b60", // キーカラー（既定：青緑）
+          tertiary: "#2b4044", // ホバー時
+          highlight: "rgba(64, 91, 96, 0.1)",
+          textHighlight: "#ecca7466", // マーカー（Links の金色）
         },
         darkMode: {
-          light: "#25343f",         // 3段目：ダークモード背景（ダークスレート）
-          lightgray: "#354754",     // 枠線・検索窓・コードブロック背景
-          gray: "#8597a5",          // メタ情報・サブテキスト
-          darkgray: "#bfc9d1",      // 2段目：本文テキスト（ライトスレート）
-          dark: "#eaefef",          // 1段目：見出し・強調テキスト（明るいアイスグレー）
-          secondary: "#ff9b51",     // 4段目：リンク色・アクセント（オレンジ）
-          tertiary: "#ffb076",      // ホバー時の明るいオレンジ
-          highlight: "rgba(255, 155, 81, 0.15)",
-          textHighlight: "#ff9b5144",
+          light: "#161a1c",
+          lightgray: "#2c3235",
+          gray: "#9aa09d",
+          darkgray: "#d3d6d4",
+          dark: "#eef0ee",
+          secondary: "#9cc4c8",
+          tertiary: "#c3dde0",
+          highlight: "rgba(156, 196, 200, 0.12)",
+          textHighlight: "#ecca7444",
         },
       },
     },

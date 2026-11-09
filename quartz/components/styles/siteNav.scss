@@ -2,14 +2,17 @@
 
 :root {
   --site-nav-h: 3.5rem;
+  // shared page frame: the nav, the home page and the 3-column pages line up on these
+  --site-max: 1500px;
+  --site-gutter: 2rem;
 }
 
 .site-nav {
   box-sizing: border-box;
-  max-width: 1500px;
+  max-width: var(--site-max);
   height: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 var(--site-gutter);
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-areas: "title links tools";
@@ -19,11 +22,31 @@
 
 .site-nav-title {
   grid-area: title;
-  font-family: var(--titleFont);
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--dark) !important;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+
+  & .site-logo {
+    display: block;
+    height: 1.6rem;
+    width: auto;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  // one mark per theme: black on the light nav, white on the dark nav
+  & .site-logo.dark {
+    display: none;
+  }
+}
+
+:root[saved-theme="dark"] .site-nav-title {
+  & .site-logo.light {
+    display: none;
+  }
+
+  & .site-logo.dark {
+    display: block;
+  }
 }
 
 .site-nav-links {
@@ -45,22 +68,29 @@
     display: block;
     padding: 0.35rem 0.75rem;
     color: var(--darkgray);
-    font-weight: 600;
+    font-weight: 500;
     font-size: 0.95rem;
     white-space: nowrap;
     border-bottom: 2px solid transparent;
     border-radius: 0;
     transition:
-      color 0.2s ease,
-      border-color 0.2s ease;
+      color 0.25s ease,
+      border-color 0.25s ease;
 
-    &:hover {
-      color: var(--tertiary);
+    // --nav-c is set per link by SiteNav (falls back to the theme colors)
+    &:hover,
+    &:focus-visible {
+      color: var(--nav-c, var(--tertiary));
+      border-bottom-color: var(--nav-c, transparent);
     }
 
     &.active {
-      color: var(--secondary);
-      border-bottom-color: var(--secondary);
+      color: var(--nav-c, var(--secondary));
+      border-bottom-color: var(--nav-c, var(--secondary));
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
     }
   }
 }
@@ -80,10 +110,11 @@
 @media all and ($mobile) {
   :root {
     --site-nav-h: 5.75rem;
+    --site-gutter: 1rem;
   }
 
   .site-nav {
-    padding: 0.5rem 1rem 0 1rem;
+    padding: 0.5rem var(--site-gutter) 0;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto auto;
     grid-template-areas:

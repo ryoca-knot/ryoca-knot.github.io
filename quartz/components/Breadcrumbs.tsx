@@ -1,6 +1,6 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import breadcrumbsStyle from "./styles/breadcrumbs.scss"
-import { FullSlug, SimpleSlug, resolveRelative, simplifySlug } from "../util/path"
+import { FullSlug, SimpleSlug, pathToRoot, resolveRelative, simplifySlug } from "../util/path"
 import { classNames } from "../util/lang"
 import { trieFromAllFiles } from "../util/ctx"
 
@@ -54,11 +54,27 @@ export default ((opts?: Partial<BreadcrumbOptions>) => {
     const slugParts = fileData.slug!.split("/")
     const pathNodes = trie.ancestryChain(slugParts)
 
-    if (!pathNodes) {
-      return null
-    }
+    // generated pages (tag pages) are not in the file trie: Home, then one crumb per
+    // path segment, e.g. Home ❯ Tags ❯ Diary
+    const crumbs: CrumbData[] = pathNodes
+      ? []
+      : [
+          { displayName: options.rootName, path: pathToRoot(fileData.slug!) },
+          ...slugParts
+            .filter((part) => part !== "index")
+            .map((part, idx, parts) => ({
+              displayName: part.charAt(0).toUpperCase() + part.slice(1).replaceAll("-", " "),
+              path:
+                idx === parts.length - 1
+                  ? ""
+                  : resolveRelative(
+                      fileData.slug!,
+                      (parts.slice(0, idx + 1).join("/") + "/") as SimpleSlug,
+                    ),
+            })),
+        ]
 
-    const crumbs: CrumbData[] = pathNodes.map((node, idx) => {
+    pathNodes?.forEach((node, idx) => {
       const crumb = formatCrumb(node.displayName, fileData.slug!, simplifySlug(node.slug))
       if (idx === 0) {
         crumb.displayName = options.rootName
@@ -69,7 +85,7 @@ export default ((opts?: Partial<BreadcrumbOptions>) => {
         crumb.path = ""
       }
 
-      return crumb
+      crumbs.push(crumb)
     })
 
     if (!options.showCurrentPage) {

@@ -1,9 +1,11 @@
 ---
-title: はじめに
+title: RyoCa Top
 name: RyoCa
 reading: りょか / りょーか
 avatar: Ryoca_hpb_sq.png
-bio: VRChatを中心にDJをしています。日記や最近聴いている音楽をゆるく置いています。
+bio: |
+  VRChatを中心にDJをしています。
+  このサイトには、自己紹介と活動の記録、日記を置いています。
 badges:
   - DJ
   - Trifourlium 主催

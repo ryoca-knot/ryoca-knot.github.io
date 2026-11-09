@@ -2,6 +2,8 @@ import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } fro
 import { classNames } from "../util/lang"
 import { formatEventDate, readEvents, SiteEvent, splitEvents } from "./siteData"
 import style from "./styles/eventTimeline.scss"
+// @ts-ignore
+import script from "./scripts/eventTimeline.inline"
 
 export function EventItem({ event }: { event: SiteEvent }) {
   return (
@@ -40,41 +42,76 @@ export default (() => {
       byYear.set(year, [...(byYear.get(year) ?? []), e])
     }
 
+    const years = [...byYear.entries()]
+
+    // main column: upcoming + one collapsible block per year (only the latest open);
+    // side column: year index that jumps to (and opens) each year
     return (
       <div class={classNames(displayClass, "event-timeline")}>
-        <p class="event-summary">
-          出演 {past.length} 回 / 今後の予定 {upcoming.length} 件
-        </p>
+        <div class="event-main">
+          <p class="event-summary">
+            出演 {past.length} 回 / 今後の予定 {upcoming.length} 件
+          </p>
 
-        <h2>今後の予定</h2>
-        {upcoming.length > 0 ? (
-          <ul class="event-list upcoming">
-            {upcoming.map((e) => (
-              <EventItem event={e} />
-            ))}
-          </ul>
-        ) : (
-          <p class="event-empty">いまのところ予定はありません。</p>
-        )}
-
-        <h2>過去の出演</h2>
-        {past.length === 0 && <p class="event-empty">随時更新します、お待ちください。</p>}
-        {[...byYear.entries()].map(([year, items]) => (
-          <section class="event-year">
-            <h3>
-              {year} <span class="event-count">{items.length}件</span>
-            </h3>
-            <ul class="event-list">
-              {items.map((e) => (
+          <h2 id="upcoming">今後の予定</h2>
+          {upcoming.length > 0 ? (
+            <ul class="event-list upcoming">
+              {upcoming.map((e) => (
                 <EventItem event={e} />
               ))}
             </ul>
-          </section>
-        ))}
+          ) : (
+            <p class="event-empty">いまのところ予定はありません。</p>
+          )}
+
+          <h2>過去の出演</h2>
+          {past.length === 0 && <p class="event-empty">随時更新します、お待ちください。</p>}
+          {years.map(([year, items], i) => (
+            <details class="event-year" id={`year-${year}`} open={i === 0}>
+              <summary>
+                {year} <span class="event-count">{items.length}件</span>
+              </summary>
+              <ul class="event-list">
+                {items.map((e) => (
+                  <EventItem event={e} />
+                ))}
+              </ul>
+            </details>
+          ))}
+        </div>
+
+        <nav class="event-index" aria-label="年ごとの目次">
+          <ul>
+            <li>
+              <a href="#upcoming">
+                今後の予定<span>{upcoming.length}</span>
+              </a>
+            </li>
+            {years.map(([year, items]) => (
+              <li>
+                <a href={`#year-${year}`}>
+                  {year}
+                  <span>{items.length}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          {years.length > 1 && (
+            <p class="event-toggle-all">
+              <button type="button" data-open="true">
+                すべて開く
+              </button>
+              <button type="button" data-open="false">
+                すべて閉じる
+              </button>
+            </p>
+          )}
+        </nav>
       </div>
     )
   }
 
   EventTimeline.css = style
+  EventTimeline.afterDOMLoaded = script
   return EventTimeline
 }) satisfies QuartzComponentConstructor

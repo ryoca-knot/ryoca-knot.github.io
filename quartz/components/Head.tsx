@@ -25,7 +25,9 @@ export default (() => {
     const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
     const path = url.pathname as FullSlug
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
-    const iconPath = joinSegments(baseDir, "static/icon.png")
+    // logo mark for the tab: black on light browser chrome, white on dark
+    const iconLightPath = joinSegments(baseDir, "static/logo/favicon-light.png")
+    const iconDarkPath = joinSegments(baseDir, "static/logo/favicon-dark.png")
 
     // Url of current page
     const socialUrl =
@@ -82,7 +84,10 @@ export default (() => {
           </>
         )}
 
-        <link rel="icon" href={iconPath} />
+        {/* the tab follows the browser's color scheme, not the site's theme toggle. The
+            light icon comes last so browsers that ignore `media` fall back to it */}
+        <link rel="icon" href={iconDarkPath} media="(prefers-color-scheme: dark)" />
+        <link rel="icon" href={iconLightPath} media="(prefers-color-scheme: light)" />
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
 
