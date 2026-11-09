@@ -1,7 +1,6 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 import ChangeLog from "./quartz/components/ChangeLog"
-import PageViewers from "./quartz/components/PageViewers"
 
 const isSlug = (slug: string) => (page: { fileData: { slug?: string } }) =>
   page.fileData.slug === slug
@@ -145,7 +144,6 @@ export const defaultContentPageLayout: PageLayout = {
       }),
       condition: (page) => page.fileData.slug !== "index" && page.fileData.slug !== "about",
     }),
-    PageViewers(),
     Component.ConditionalRender({ component: Component.LinkCards(), condition: isSlug("links") }),
   ],
   left: [

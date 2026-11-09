@@ -65,7 +65,6 @@ export default (() => {
   return ChangeLog
 }) satisfies QuartzComponentConstructor
 
-
 // import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 
 // // 1. 更新履歴1件ぶんの「型（データの形）」を定義

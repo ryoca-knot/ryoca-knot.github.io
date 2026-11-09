@@ -9,7 +9,7 @@ export default (() => {
     // console.log("★ 2. LikeButton 描画実行")
     return (
       <div class={`like-container ${displayClass ?? ""}`}>
-        <button id="like-btn" class="like-btn" >
+        <button id="like-btn" class="like-btn">
           👏 <span id="like-count">0</span>
         </button>
       </div>

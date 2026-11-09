@@ -190,7 +190,7 @@ events:
   - date: 2026-11-14
     title: "Endorphin IRL"
     role: DJ
-    venue: Swipe池尻大橋   
+    venue: Swipe池尻大橋
 ---
 
 ジャンル：Garage, House, Electronica, Techno, pops, Anime, etc.

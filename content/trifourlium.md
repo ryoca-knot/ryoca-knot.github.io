@@ -2,11 +2,9 @@
 title: Trifourlium
 ---
 
-
 TrifourliumはVRChatで開催している音楽イベントです。
 
 イベントハッシュタグは ["#Trifourlium"](https://x.com/hashtag/Trifourlium) です。感想・イベントの写真・特典アイテムを使った改変などハッシュタグをつけて発信してもらえると嬉しいです。
-
 
 # イベント概要
 
@@ -15,8 +13,8 @@ TrifourliumはVRChatで開催している音楽イベントです。
 簡単な紹介はこんな感じ
 
 - 植物園モチーフのワールド🍀
-- 明るさ・透明感のある音楽💿 
-	(Electronica, Ambient, Progressive House,  Trance, etc.)
+- 明るさ・透明感のある音楽💿
+  (Electronica, Ambient, Progressive House, Trance, etc.)
 - 来場者特典のアイテム配布🎁
 - Twitch同時配信
 
@@ -35,6 +33,7 @@ Trifourliumは植物園をモチーフにしたワールド”TEIEN”で開催�
 2026年前半からはTwitchでの同時配信も開始し、VRChat外からもイベントの様子を見ることができるようになりました。
 
 ## 主要メンバー
+
 - RyoCa(主催)
 - doppel02(ワールド)
 - GEN3987(デザイン)
