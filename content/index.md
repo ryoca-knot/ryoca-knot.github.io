@@ -1,5 +1,5 @@
 ---
-title: はじめに
+title: RyoCa Top
 name: RyoCa
 reading: りょか / りょーか
 avatar: Ryoca_hpb_sq.png

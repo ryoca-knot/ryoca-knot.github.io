@@ -1,17 +1,16 @@
-// Home (slug "index") only: intro + topics on a fixed blue-green background, inside the
+// Home (slug "index") only: intro + topics on the default page background, inside the
 // same frame as the nav (--site-max / --site-gutter) so their edges line up. On desktop
 // everything fits on one screen.
 
 body[data-slug="index"] {
-  --home-bg: #405b60;
-  --on: #f4f5f4;
-  --on-sub: rgba(244, 245, 244, 0.74);
-  --on-line: rgba(244, 245, 244, 0.18);
+  --on: var(--dark);
+  --on-sub: var(--gray);
+  --on-line: var(--lightgray);
 
-  background-color: var(--home-bg);
-
-  & header.site-header {
-    border-bottom: 0;
+  // topic headings and buttons: the deep topic color on the light page, the pale one on
+  // the dark page
+  & .home-topic {
+    --topic-ink: var(--topic-fill);
   }
 
   // only the hero is shown: no sidebars, page body, change log or page meta
@@ -53,7 +52,7 @@ body[data-slug="index"] {
       }
     }
 
-    // footer layout comes from footer.scss; here only the frame and colors on the dark field
+    // footer layout comes from footer.scss; here only the frame and colors
     & > footer {
       box-sizing: border-box;
       width: 100%;
@@ -74,8 +73,8 @@ body[data-slug="index"] {
   }
 }
 
-:root[saved-theme="dark"] body[data-slug="index"] {
-  --home-bg: #2b4044;
+:root[saved-theme="dark"] body[data-slug="index"] .home-topic {
+  --topic-ink: var(--topic-color);
 }
 
 .home-hero {
@@ -121,8 +120,12 @@ body[data-slug="index"] {
     line-height: 1;
     color: var(--on);
 
+    // reading on its own line under the name (inline, it wrapped in a narrow column and
+    // the wrapped part landed a full name-height below)
     & small {
-      margin-left: 14px;
+      display: block;
+      margin-top: 12px;
+      line-height: 1.6;
       font-family: var(--bodyFont);
       font-size: 13px;
       letter-spacing: 0.12em;
@@ -171,7 +174,7 @@ body[data-slug="index"] {
     font-size: clamp(26px, 3vw, 34px);
     line-height: 1.1;
     letter-spacing: 0.01em;
-    color: var(--topic-color);
+    color: var(--topic-ink);
     transition: color 0.25s ease;
 
     &::before {
@@ -181,7 +184,7 @@ body[data-slug="index"] {
       height: 9px;
       margin-right: 2px;
       border-radius: 50%;
-      background: var(--topic-color);
+      background: var(--topic-ink);
     }
 
     & span {
@@ -211,7 +214,7 @@ body[data-slug="index"] {
     font-weight: 500;
     font-size: 14px;
     line-height: 1.4;
-    color: var(--topic-color);
+    color: var(--topic-ink);
     text-decoration: none;
     transition:
       background-color 0.25s,
@@ -242,9 +245,18 @@ body[data-slug="index"] {
     & h2 {
       color: #fff;
 
+      // the dot keeps the pale topic color on the deep fill
+      &::before {
+        background: var(--topic-color);
+      }
+
       & span {
         color: rgba(255, 255, 255, 0.8);
       }
+    }
+
+    & p {
+      color: rgba(255, 255, 255, 0.9);
     }
 
     & .home-topic-go {
