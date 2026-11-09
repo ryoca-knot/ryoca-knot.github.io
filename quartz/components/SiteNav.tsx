@@ -1,5 +1,5 @@
 import { concatenateResources } from "../util/resources"
-import { pathToRoot, resolveRelative, SimpleSlug } from "../util/path"
+import { joinSegments, pathToRoot, resolveRelative, SimpleSlug } from "../util/path"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { i18n } from "../i18n"
 import style from "./styles/siteNav.scss"
@@ -41,8 +41,18 @@ export default ((config: SiteNavConfig) => {
 
     return (
       <nav class="site-nav">
-        <a class="site-nav-title" href={pathToRoot(current)}>
-          {title}
+        {/* logo mark: black on the light nav, white on the dark one (siteNav.scss) */}
+        <a class="site-nav-title" href={pathToRoot(current)} aria-label={title}>
+          <img
+            class="site-logo light"
+            src={joinSegments(pathToRoot(current), "static/logo/mark_black.png")}
+            alt=""
+          />
+          <img
+            class="site-logo dark"
+            src={joinSegments(pathToRoot(current), "static/logo/mark_white.png")}
+            alt=""
+          />
         </a>
         <ul class="site-nav-links">
           {config.links.map((link) => (

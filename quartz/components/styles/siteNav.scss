@@ -22,12 +22,31 @@
 
 .site-nav-title {
   grid-area: title;
-  font-family: var(--titleFont);
-  font-size: 1.35rem;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  color: var(--dark) !important;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+
+  & .site-logo {
+    display: block;
+    height: 1.6rem;
+    width: auto;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  // one mark per theme: black on the light nav, white on the dark nav
+  & .site-logo.dark {
+    display: none;
+  }
+}
+
+:root[saved-theme="dark"] .site-nav-title {
+  & .site-logo.light {
+    display: none;
+  }
+
+  & .site-logo.dark {
+    display: block;
+  }
 }
 
 .site-nav-links {
