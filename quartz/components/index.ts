@@ -28,6 +28,9 @@ import LinkCards from "./LinkCards"
 import EventTimeline from "./EventTimeline"
 import HomeHero from "./HomeHero"
 import PageBand from "./PageBand"
+import BlogNav from "./BlogNav"
+import AboutProfile from "./AboutProfile"
+import ListMeta from "./ListMeta"
 
 export {
   ArticleTitle,
@@ -60,4 +63,7 @@ export {
   EventTimeline,
   HomeHero,
   PageBand,
+  BlogNav,
+  AboutProfile,
+  ListMeta,
 }

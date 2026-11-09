@@ -129,138 +129,139 @@ article > h3 {
   }
 }
 
-// Left sidebar: "Recent Updates" and "Explorer" as sections divided by a thin rule
-// (no cards, like the home page)
-@media all and not ($mobile) {
-  .left .recent-notes,
-  .left .explorer {
-    box-sizing: border-box;
-    border-top: 1px solid var(--lightgray);
-    padding: 0.75rem 0 0;
-  }
-}
-
-// Recent Updates: compact, one line per note, no dates
-.left .recent-notes {
-  & > h3 {
-    margin: 0;
-    font-size: 1rem;
-    color: var(--dark);
-  }
-
-  & > ul.recent-ul {
-    margin: 0.5rem 0 0 0;
-
-    & > li {
-      margin: 0.15rem 0;
-
-      .section > .meta {
-        display: none;
-      }
-
-      .section > .desc > h3 {
-        margin: 0;
-        font-size: 0.85rem;
-        font-weight: normal;
-        line-height: 1.5;
-
-        & > a {
-          display: block;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          color: var(--dark);
-          opacity: 0.75;
-          padding: 0;
-
-          &:hover {
-            color: var(--tertiary);
-            opacity: 1;
-          }
-        }
-      }
-    }
-  }
-}
-
-// Explorer: one line per entry
-.left .explorer {
-  .explorer-content li > a {
-    display: block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .folder-container {
-    min-width: 0;
-
-    & > div {
-      flex: 1;
-      min-width: 0;
-    }
-
-    & div > a,
-    & div > button,
-    & div > button > span {
-      display: block;
-      max-width: 100%;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-  }
-}
-
-// Graph view pinned to the bottom of the left sidebar
-@media all and not ($mobile) {
-  .left > .graph {
-    margin-top: auto;
-    flex-shrink: 0;
-  }
-}
-
-// Full-width site nav (SiteNav.tsx): keep sticky sidebars below the bar and
-// drop the large top spacing that used to make room for the page title
+// Page grid: no sidebars except the left column on Blog (categories) and About (profile),
+// so the body is one centered column, or left column + body. Kept below the nav bar.
 .page > #quartz-body {
-  & .sidebar {
-    top: var(--site-nav-h);
-    height: calc(100vh - var(--site-nav-h));
-    padding-top: 2rem;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 var(--site-gutter);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "grid-center"
+    "grid-footer";
+
+  & > .sidebar {
+    display: none;
+  }
+
+  & > .center {
+    grid-area: grid-center;
+  }
+
+  & > footer {
+    grid-area: grid-footer;
   }
 
   & .page-header {
     margin-top: 2rem;
-    @media all and ($mobile) {
-      margin-top: 0;
+  }
+
+  &:has(> .sidebar.left > *) {
+    max-width: 1140px;
+    grid-template-columns: 200px minmax(0, 1fr);
+    grid-template-areas:
+      "grid-sidebar-left grid-center"
+      "grid-sidebar-left grid-footer";
+    column-gap: clamp(2rem, 4vw, 3.5rem);
+
+    & > .sidebar.left {
+      display: flex;
+      top: var(--site-nav-h);
+      height: auto;
+      max-height: calc(100vh - var(--site-nav-h));
+      padding: 2rem 1.5rem 2rem 0;
+      border-right: 1px solid var(--lightgray);
+    }
+  }
+
+  // wide screens: the body column keeps the same width and position as on the other pages
+  // (920px) and the left column sits in the margin to its left, so every
+  // title band lines up
+  @media (min-width: 1480px) {
+    &:has(> .sidebar.left > *) {
+      max-width: none;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 920px) minmax(0, 1fr);
+      grid-template-areas:
+        "grid-sidebar-left grid-center ."
+        "grid-sidebar-left grid-footer .";
+      column-gap: 0;
+
+      & > .sidebar.left {
+        justify-self: end;
+        width: 200px;
+        margin-right: 2.5rem;
+      }
     }
   }
 
   @media all and ($mobile) {
-    & .sidebar.left {
-      padding-top: 1rem;
-    }
-  }
+    &:has(> .sidebar.left > *) {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "grid-sidebar-left"
+        "grid-center"
+        "grid-footer";
 
-  // tablet: line the content up with the nav frame (the left sidebar brings its own 2rem)
-  @media all and ($tablet) {
-    padding: 0 var(--site-gutter) 0 0;
-  }
-}
-
-// Explorer card: Quartz collapses the explorer by shrinking it to 1.2rem, which clips
-// the title once the card padding/border is added. Hide the list instead.
-@media all and not ($mobile) {
-  .left .explorer {
-    min-height: auto;
-    flex-shrink: 1;
-
-    &.collapsed {
-      flex: 0 0 auto;
-
-      & > .explorer-content {
-        display: none;
+      & > .sidebar.left {
+        padding: 1rem 0 0;
+        border-right: 0;
       }
     }
   }
+}
+
+// Blog list (tag / folder pages): one row per post, date then title
+.page-listing ul.section-ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  & > li.section-li {
+    margin: 0;
+    border-bottom: 1px solid var(--lightgray);
+
+    & > .section {
+      display: grid;
+      grid-template-columns: 7rem minmax(0, 1fr);
+      align-items: baseline;
+      gap: 0.25rem 1rem;
+      padding: 0.85rem 0;
+
+      & > .meta {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--gray);
+        font-variant-numeric: tabular-nums;
+      }
+
+      & > .desc h3 {
+        font-weight: 400;
+        font-size: 1.05rem;
+      }
+
+      // the category column already shows the tags
+      & > .tags {
+        display: none;
+      }
+
+      @media all and ($mobile) {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  }
+}
+
+// Links: two columns of link cards
+.link-cards {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  @media all and ($mobile) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// Tag / folder pages: the post count is already in the title band (ListMeta)
+.page-listing > p:first-child {
+  display: none;
 }
