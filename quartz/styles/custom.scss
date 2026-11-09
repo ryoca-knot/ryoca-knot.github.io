@@ -265,3 +265,11 @@ article > h3 {
 .page-listing > p:first-child {
   display: none;
 }
+
+// Blog and Links: text, links and icons in the plain text color instead of the key color
+// (the colored titles / icons were hard to read). The title band keeps its key color.
+body:has(.site-nav-links a.active:is([data-t="blog"], [data-t="links"])) > #quartz-root {
+  --secondary: var(--dark);
+  --tertiary: var(--darkgray);
+  --highlight: color-mix(in srgb, var(--dark) 8%, transparent);
+}
