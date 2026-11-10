@@ -3,8 +3,9 @@ import { FullSlug, getFileExtension, joinSegments, pathToRoot } from "../util/pa
 import { CSSResourceToStyleElement, JSResourceToScriptElement } from "../util/resources"
 import { googleFontHref, googleFontSubsetHref } from "../util/theme"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-import { unescapeHTML } from "../util/escape"
 import { CustomOgImagesEmitterName } from "../plugins/emitters/ogImage"
+const siteDescription = "written by RyoCa"
+
 export default (() => {
   const Head: QuartzComponent = ({
     cfg,
@@ -15,10 +16,12 @@ export default (() => {
     const titleSuffix = cfg.pageTitleSuffix ?? ""
     const title =
       (fileData.frontmatter?.title ?? i18n(cfg.locale).propertyDefaults.title) + titleSuffix
+    // リンクカードに本文が出ないよう、説明文はサイト共通の固定文にする。
+    // ページごとに変えたいときだけ frontmatter の description で上書きできる
     const description =
       fileData.frontmatter?.socialDescription ??
       fileData.frontmatter?.description ??
-      unescapeHTML(fileData.description?.trim() ?? i18n(cfg.locale).propertyDefaults.description)
+      siteDescription
 
     const { css, js, additionalHead } = externalResources
 
@@ -36,7 +39,7 @@ export default (() => {
     const usesCustomOgImage = ctx.cfg.plugins.emitters.some(
       (e) => e.name === CustomOgImagesEmitterName,
     )
-    const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.png`
+    const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image_ryoca.png`
 
     return (
       <head>

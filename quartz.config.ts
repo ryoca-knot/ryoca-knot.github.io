@@ -194,8 +194,8 @@ const config: QuartzConfig = {
       Plugin.Static(),
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
-      // Comment out CustomOgImages to speed up build time
-      Plugin.CustomOgImages(),
+      // ページごとのOG画像（タイトル＋本文入り）は作らず、quartz/static/og-image_ryoca.png を全ページ共通で使う
+      // Plugin.CustomOgImages(),
     ],
   },
 }
