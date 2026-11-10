@@ -44,8 +44,8 @@ export default (() => {
 
     const years = [...byYear.entries()]
 
-    // main column: upcoming + one collapsible block per year (only the latest open);
-    // side column: year index that jumps to (and opens) each year
+    // main column: upcoming + one collapsible block per year (all closed by default);
+    // left column: year index that jumps to (and opens) each year
     return (
       <div class={classNames(displayClass, "event-timeline")}>
         <div class="event-main">
@@ -66,8 +66,8 @@ export default (() => {
 
           <h2>過去の出演</h2>
           {past.length === 0 && <p class="event-empty">随時更新します、お待ちください。</p>}
-          {years.map(([year, items], i) => (
-            <details class="event-year" id={`year-${year}`} open={i === 0}>
+          {years.map(([year, items]) => (
+            <details class="event-year" id={`year-${year}`}>
               <summary>
                 {year} <span class="event-count">{items.length}件</span>
               </summary>

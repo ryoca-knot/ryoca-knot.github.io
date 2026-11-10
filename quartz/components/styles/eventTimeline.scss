@@ -87,11 +87,17 @@ ul.event-list {
   }
 }
 
-// main column + year index on the right (sticky below the nav bar)
+// wide screens (1480px+): the main column keeps the full body width, and the year index
+// sits in the margin to its left, where the other pages put their left sidebar: it starts
+// 700px left of the page center like them and the nav logo. The body column starts 460px
+// left of the center, so the index (200px, like the sidebars) is pulled out 240px.
+// narrower screens have no room in the margin, so the index becomes a row of chips above.
+$event-index-wide: "(min-width: 1480px)";
+$event-index-narrow: "(max-width: 1479.98px)";
+
 .event-timeline {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 9rem;
-  column-gap: clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
 
   & h2,
@@ -99,8 +105,27 @@ ul.event-list {
     scroll-margin-top: calc(var(--site-nav-h) + 1rem);
   }
 
-  @media all and ($mobile) {
-    grid-template-columns: minmax(0, 1fr);
+  & > .event-main {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  & > .event-index {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  @media #{$event-index-wide} {
+    & > .event-main {
+      grid-row: 1;
+    }
+
+    // same cell as the main column, pulled out to the left of it
+    & > .event-index {
+      justify-self: start;
+      width: 200px;
+      margin-left: -240px;
+    }
   }
 }
 
@@ -166,8 +191,8 @@ details.event-year {
   & ul {
     list-style: none;
     margin: 0;
-    padding: 0 0 0 0.75rem;
-    border-left: 1px solid var(--lightgray);
+    padding: 0 0.75rem 0 0;
+    border-right: 1px solid var(--lightgray);
   }
 
   & li {
@@ -214,10 +239,9 @@ details.event-year {
     }
   }
 
-  // mobile: a row of year chips above the timeline
-  @media all and ($mobile) {
+  // narrower screens: a row of year chips above the timeline
+  @media #{$event-index-narrow} {
     position: static;
-    grid-row: 1;
     margin-bottom: 1rem;
 
     & ul {
@@ -225,7 +249,7 @@ details.event-year {
       flex-wrap: wrap;
       gap: 0.4rem;
       padding: 0;
-      border-left: 0;
+      border-right: 0;
     }
 
     & a {
