@@ -19,6 +19,8 @@ interface Topic {
 
 interface Options {
   topics: Topic[]
+  // the avatar links to this page (e.g. About); key / fill work like a topic's
+  avatarLink?: { slug: string; label: string; key: string; fill: string }
 }
 
 // Home: intro (avatar / name / bio / roles from index.md frontmatter) and one row per topic
@@ -34,11 +36,25 @@ export default ((opts: Options) => {
       pathToRoot(current),
       (fm.avatar as string | undefined) ?? "static/icon.png",
     )
+    const link = opts.avatarLink
+    const img = <img class="home-avatar" src={avatar} alt={name} />
 
     return (
-      <div class={classNames(displayClass, "home-hero")}>
+      // lang="ja" lets the browser break lines between Japanese phrases (word-break: auto-phrase)
+      <div class={classNames(displayClass, "home-hero")} lang="ja">
         <section class="home-intro">
-          <img class="home-avatar" src={avatar} alt={name} />
+          {link ? (
+            <a
+              class="home-avatar-link"
+              href={resolveRelative(current, link.slug as SimpleSlug)}
+              style={`--topic-fill:${link.fill}`}
+            >
+              {img}
+              <span class="home-avatar-go">{link.label}</span>
+            </a>
+          ) : (
+            img
+          )}
           <div>
             <h1 class="home-name">
               {name}
@@ -72,13 +88,19 @@ export default ((opts: Options) => {
     )
   }
 
-  // hovering / focusing a topic underlines its nav item in the item's own color (see SiteNav)
-  const navRules = opts.topics
-    .map(
+  // hovering / focusing a topic (or the avatar link) underlines its nav item in the item's
+  // own color (see SiteNav)
+  const navRules = [
+    ...opts.topics.map(
       (t) =>
         `body:has(.home-topic[data-nav="${t.key}"]:is(:hover, :focus-within)) .site-nav-links a[data-t="${t.key}"]`,
-    )
-    .join(",\n")
+    ),
+    ...(opts.avatarLink
+      ? [
+          `body:has(.home-avatar-link:is(:hover, :focus-visible)) .site-nav-links a[data-t="${opts.avatarLink.key}"]`,
+        ]
+      : []),
+  ].join(",\n")
 
   HomeHero.css = `${style}
 ${navRules} {

@@ -90,6 +90,8 @@ export const sharedPageComponents: SharedLayout = {
 
 // home: intro + one row per topic; `key` matches the SiteNav link it underlines on hover
 const homeHero = Component.HomeHero({
+  // the avatar opens About; fill = the About nav link's color
+  avatarLink: { slug: "about", label: "About me", key: "about", fill: "#2f6f8f" },
   topics: [
     {
       key: "trif",
@@ -107,7 +109,7 @@ const homeHero = Component.HomeHero({
       title: "Blog",
       subtitle: "日記と音楽",
       description:
-        "日々のことを書く日記と、最近よく聴いている音楽を紹介する NowListening を置いています。",
+        "日々のことを書く日記と、最近よく聴いている音楽を紹介する NowListening を置いています。", // no break before を
       button: "記事一覧へ",
       slug: "tags/diary",
       color: "#f7c6d1",

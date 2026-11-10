@@ -1,6 +1,7 @@
 // Home (slug "index") only: intro + topics on the default page background, inside the
-// same frame as the nav (--site-max / --site-gutter) so their edges line up. On desktop
-// everything fits on one screen.
+// same frame as the nav (--site-max / --site-gutter) so the avatar block starts at the
+// logo's left edge, like the left sidebars on the other pages. On desktop everything fits
+// on one screen.
 
 body[data-slug="index"] {
   --on: var(--dark);
@@ -22,6 +23,8 @@ body[data-slug="index"] {
     display: flex;
     flex-direction: column;
     min-height: calc(100dvh - var(--site-nav-h));
+    // the hero and footer set their own frame (--site-max), not the 920px article column
+    max-width: none;
     padding: 0;
 
     & > .sidebar,
@@ -87,6 +90,10 @@ body[data-slug="index"] {
   line-height: 1.9;
   color: var(--on);
   -webkit-font-smoothing: antialiased;
+  // break lines between phrases, not inside words ("置いてい / ます"), and avoid a short last
+  // line; browsers without support keep the normal line breaking
+  word-break: auto-phrase;
+  text-wrap: pretty;
 
   & p {
     color: var(--on);
@@ -147,6 +154,84 @@ body[data-slug="index"] {
     font-size: 13px;
     letter-spacing: 0.04em;
     color: var(--on-sub);
+  }
+}
+
+// avatar as a link to About: on hover / keyboard focus it fills with About's color like a
+// topic block and shows the label; on touch screens (no hover) the label stays in a corner.
+// z-index: the image can form its own layer (e.g. a filter), which would cover the fill
+.home-avatar-link {
+  position: relative;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  color: #fff;
+  text-decoration: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: 2px;
+    background: var(--topic-fill);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  & .home-avatar-go {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    font-family: var(--headerFont);
+    font-size: clamp(20px, 2.4vw, 30px);
+    letter-spacing: 0.02em;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+
+    &::after {
+      content: "→";
+      font-family: var(--bodyFont);
+      transition: transform 0.2s;
+    }
+  }
+
+  &:hover,
+  &:focus-visible {
+    &::before {
+      opacity: 0.82;
+    }
+
+    & .home-avatar-go {
+      opacity: 1;
+
+      &::after {
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--topic-fill);
+    outline-offset: 10px;
+  }
+
+  @media (hover: none) {
+    & .home-avatar-go {
+      inset: auto 0 0 auto;
+      padding: 3px 10px;
+      border-radius: 2px 0 2px 0;
+      background: var(--topic-fill);
+      font-family: var(--bodyFont);
+      font-size: 12px;
+      opacity: 1;
+    }
   }
 }
 
@@ -278,8 +363,10 @@ body[data-slug="index"] {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: clamp(32px, 5vw, 72px);
-    align-items: center;
-    padding-block: clamp(16px, 3vh, 40px);
+    // top-aligned at the height where the other pages' body text starts: 2rem gap + title
+    // band (159px) + 16px below it = 207px under the nav (264px from the top of the window)
+    align-items: start;
+    padding-block: 207px clamp(16px, 3vh, 40px);
   }
 
   .home-intro {
@@ -288,8 +375,17 @@ body[data-slug="index"] {
     gap: 16px;
     padding-bottom: 0;
 
+    // wide banner across the whole intro column (up to the gap before the topics),
+    // cropped around the face
+    & .home-avatar-link {
+      width: 100%;
+    }
+
     & .home-avatar {
-      width: clamp(96px, 14vh, 150px);
+      width: 100%;
+      height: clamp(140px, 30vh, 300px);
+      aspect-ratio: auto;
+      object-position: 50% 55%;
     }
 
     & .home-name {
@@ -332,7 +428,7 @@ body[data-slug="index"] {
   }
 
   .home-hero {
-    padding-block: 8px;
+    padding-bottom: 8px;
   }
 
   .home-intro .home-bio {
@@ -369,6 +465,9 @@ body[data-slug="index"] {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .home-avatar-link::before,
+  .home-avatar-link .home-avatar-go,
+  .home-avatar-link .home-avatar-go::after,
   .home-topic,
   .home-topic h2,
   .home-topic .home-topic-go {
