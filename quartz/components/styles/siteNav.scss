@@ -5,11 +5,26 @@
   // shared page frame: the nav, the home page and the 3-column pages line up on these
   --site-max: 1500px;
   --site-gutter: 2rem;
+  // nav frame: the logo's left edge lines up with the left sidebar (custom.scss page grid).
+  // up to 1479px the sidebar sits at the left edge of a 1140px column (+ gutters = 1204px); from 1480px it sits
+  // 700px left of the page center, which a 1464px frame (1400px + gutters) matches
+  --nav-max: 1204px;
+}
+
+@media (min-width: 1480px) {
+  :root {
+    --nav-max: 1464px;
+  }
+}
+
+// home: the nav keeps the home hero's frame so the two stay aligned
+body[data-slug="index"] {
+  --nav-max: var(--site-max);
 }
 
 .site-nav {
   box-sizing: border-box;
-  max-width: var(--site-max);
+  max-width: var(--nav-max);
   height: 100%;
   margin: 0 auto;
   padding: 0 var(--site-gutter);

@@ -132,7 +132,7 @@ export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
     // the home hero replaces the whole page on the home page (homeHero.scss hides the rest)
     Component.ConditionalRender({ component: homeHero, condition: isSlug("index") }),
-    // every other page (About has its profile in the left column instead): title band in the page's key color
+    // every other page: title band in the page's key color
     Component.ConditionalRender({
       component: Component.PageBand({
         components: [
@@ -142,12 +142,12 @@ export const defaultContentPageLayout: PageLayout = {
           Component.TagList(),
         ],
       }),
-      condition: (page) => page.fileData.slug !== "index" && page.fileData.slug !== "about",
+      condition: (page) => page.fileData.slug !== "index",
     }),
     Component.ConditionalRender({ component: Component.LinkCards(), condition: isSlug("links") }),
   ],
   left: [
-    // About: photo / name / roles in the same left column as the Blog categories
+    // About: profile (photo / name / short bio / roles) laid out like the Blog sidebar
     Component.ConditionalRender({
       component: Component.AboutProfile(),
       condition: isSlug("about"),
