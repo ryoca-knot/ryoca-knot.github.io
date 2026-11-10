@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+  # 記事リポジトリ (blog-content) に push されたときに呼ばれる
+  repository_dispatch:
+    types: [content-updated]
+  # Actions 画面から手動で再デプロイできるように
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,6 +25,16 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
+          fetch-depth: 0
+
+      # 記事は private リポジトリにあるので、最新版を content/ に取り込む
+      # fetch-depth: 0 は記事の作成日・更新日を git 履歴から取るため
+      - name: Checkout content
+        uses: actions/checkout@v7
+        with:
+          repository: ryoca-knot/blog-content
+          token: ${{ secrets.CONTENT_REPO_TOKEN }}
+          path: content
           fetch-depth: 0
 
       - name: Setup Node

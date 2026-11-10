@@ -10,4 +10,6 @@ private/
 .replit
 replit.nix
 blogTemplate
+# 記事は別リポジトリ (ryoca-knot/blog-content) で管理
+content/
 
