@@ -84,7 +84,10 @@
 
 // Recent Updates under the categories: same small heading, date above each title
 .sidebar.left .recent-notes {
-  padding-top: 1.25rem;
+  // the sidebar's own 1.2rem gap sits above the rule; this adds to it so the space
+  // above and below the rule is about 2rem each
+  margin-top: 0.8rem;
+  padding-top: 2rem;
   border-top: 1px solid var(--lightgray);
 
   & > h3 {
