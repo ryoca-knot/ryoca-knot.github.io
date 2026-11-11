@@ -12,7 +12,7 @@ import { write } from "./helpers"
 import { BuildCtx } from "../../util/ctx"
 import { StaticResources } from "../../util/resources"
 
-// Emits /blog, the Blog top page, with no Markdown file behind it (like the tag pages).
+// Emits /blog, the Blog top page. It works with or without a blog.md (like the tag pages).
 // It uses the list-page layout, so it gets the same title band and Category sidebar.
 const slug = "blog" as FullSlug
 
@@ -22,7 +22,11 @@ async function processBlogPage(
   opts: FullPageLayout,
   resources: StaticResources,
 ) {
-  const [tree, file] = defaultProcessedContent({ slug, frontmatter: { title: "Blog", tags: [] } })
+  // blog.md in the content folder, if there is one, gives the text above the list
+  // (ContentPage skips it so it is not emitted twice)
+  const [tree, file] =
+    content.find(([, f]) => f.data.slug === slug) ??
+    defaultProcessedContent({ slug, frontmatter: { title: "Blog", tags: [] } })
   const cfg = ctx.cfg.configuration
   const externalResources = pageResources(pathToRoot(slug), resources)
   const componentData: QuartzComponentProps = {
