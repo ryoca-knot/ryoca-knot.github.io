@@ -10,7 +10,7 @@ const blogFolders = ["Diary", "NowListening"]
 const isBlog = (page: { fileData: { slug?: string; frontmatter?: { tags?: string[] } } }) => {
   const slug = page.fileData.slug ?? ""
   return (
-    ["tags", ...blogFolders].some((s) => slug === s || slug.startsWith(s + "/")) ||
+    ["blog", "tags", ...blogFolders].some((s) => slug === s || slug.startsWith(s + "/")) ||
     (page.fileData.frontmatter?.tags ?? []).length > 0
   )
 }
@@ -60,8 +60,8 @@ export const sharedPageComponents: SharedLayout = {
         },
         {
           label: "Blog",
-          slug: "tags/diary",
-          match: ["tags", ...blogFolders],
+          slug: "blog",
+          match: ["blog", "tags", ...blogFolders],
           key: "blog",
           color: { light: "#8a3549", dark: "#f7c6d1" },
         },
@@ -111,7 +111,7 @@ const homeHero = Component.HomeHero({
       description:
         "日々のことを書く日記と、最近よく聴いている音楽を紹介する NowListening を置いています。", // no break before を
       button: "記事一覧へ",
-      slug: "tags/diary",
+      slug: "blog",
       color: "#f7c6d1",
       fill: "#8a3549",
     },

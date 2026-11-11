@@ -1,5 +1,6 @@
 import Content from "./pages/Content"
 import TagContent from "./pages/TagContent"
+import BlogContent from "./pages/BlogContent"
 import FolderContent from "./pages/FolderContent"
 import NotFound from "./pages/404"
 import ArticleTitle from "./ArticleTitle"
@@ -36,6 +37,7 @@ export {
   ArticleTitle,
   Content,
   TagContent,
+  BlogContent,
   FolderContent,
   Darkmode,
   ReaderMode,
