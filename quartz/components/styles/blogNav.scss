@@ -84,10 +84,52 @@
 
 // Recent Updates under the categories: same small heading, date above each title
 .sidebar.left .recent-notes {
-  padding-top: 1.25rem;
+  // the sidebar's own 1.2rem gap sits above the rule; this adds to it so the space
+  // above and below the rule is about 2rem each
+  margin-top: 0.8rem;
+  padding-top: 2rem;
   border-top: 1px solid var(--lightgray);
 
-  & > h3 {
+  // the heading is the open/close toggle; a small chevron shows the state
+  & > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+    cursor: pointer;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: "";
+      width: 0.4rem;
+      height: 0.4rem;
+      margin: 0 0.3rem 0.75rem 0;
+      border-right: 1px solid var(--gray);
+      border-bottom: 1px solid var(--gray);
+      transform: rotate(45deg);
+      transition: transform 0.2s;
+    }
+
+    &:hover > h3,
+    &:hover::after {
+      color: var(--secondary);
+      border-color: var(--secondary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--secondary);
+      outline-offset: 2px;
+    }
+  }
+
+  &:not([open]) > summary::after {
+    transform: rotate(-45deg);
+  }
+
+  & > summary > h3 {
     margin: 0 0 0.75rem;
     font-size: 0.8rem;
     font-weight: 400;
