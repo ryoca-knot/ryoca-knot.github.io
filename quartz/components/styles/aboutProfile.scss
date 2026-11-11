@@ -27,6 +27,9 @@
     object-fit: cover;
     margin: 0 0 0.75rem;
     border-radius: 2px;
+    // base.scss gives every img content-visibility: auto; inside the sticky left column
+    // the browser can skip painting it until a hover forces a repaint
+    content-visibility: visible;
   }
 
   & .about-name {
