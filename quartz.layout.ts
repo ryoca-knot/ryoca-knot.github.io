@@ -98,7 +98,7 @@ const homeHero = Component.HomeHero({
       title: "Trifourlium",
       subtitle: "主催イベント",
       description:
-        "植物園をモチーフにしたワールド「TEIEN」で開いている、VRChatの音楽イベントです。明るさと透明感のある音楽、来場者への特典アイテム、Twitchでの同時配信があります。",
+        "植物園をモチーフにしたワールド「TEIEN」で開いている、VRChatの音楽イベントです",
       button: "イベントについて",
       slug: "trifourlium",
       color: "#a8dcb5",
@@ -109,7 +109,7 @@ const homeHero = Component.HomeHero({
       title: "Blog",
       subtitle: "日記と音楽",
       description:
-        "日々のことを書く日記と、最近よく聴いている音楽を紹介する NowListening を置いています。", // no break before を
+        "日記や音楽など、テキストで残したいものを置いています", // no break before を
       button: "記事一覧へ",
       slug: "tags/diary",
       color: "#f7c6d1",
