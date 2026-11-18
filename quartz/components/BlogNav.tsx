@@ -29,6 +29,16 @@ export default ((opts: Options) => {
       <nav class={classNames(displayClass, "blog-nav")}>
         <h3>{opts.title}</h3>
         <ul>
+          {/* All = the Blog top (/blog), active only there */}
+          <li>
+            <a
+              class={current === "blog" ? "active" : ""}
+              href={resolveRelative(current, "blog" as FullSlug)}
+            >
+              All
+              <span>{allFiles.filter((f) => (f.frontmatter?.tags ?? []).length > 0).length}</span>
+            </a>
+          </li>
           {tags.map(([tag, count]) => (
             <li>
               <a

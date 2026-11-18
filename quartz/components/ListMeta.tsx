@@ -12,7 +12,11 @@ export default (() => {
   }: QuartzComponentProps) => {
     const slug = fileData.slug!
     let text: string
-    if (slug === "tags/index" || slug === "tags") {
+    if (slug === "blog") {
+      // Blog top: every post (= page with a tag)
+      const count = allFiles.filter((f) => (f.frontmatter?.tags ?? []).length > 0).length
+      text = `${count} 件の記事`
+    } else if (slug === "tags/index" || slug === "tags") {
       const tags = new Set(
         allFiles.flatMap((f) => f.frontmatter?.tags ?? []).flatMap(getAllSegmentPrefixes),
       )
