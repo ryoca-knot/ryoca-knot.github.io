@@ -462,6 +462,20 @@ body[data-slug="index"] {
   .home-topic {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  // phones: the avatar becomes a wide, low banner across the screen like on desktop,
+  // cropped around the face
+  .home-intro {
+    & .home-avatar-link {
+      width: 100%;
+    }
+
+    & .home-avatar {
+      width: 100%;
+      aspect-ratio: 5 / 2;
+      object-position: 50% 55%;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
